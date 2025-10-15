@@ -1,0 +1,59 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      @apply bg-gray-900 text-white;
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen px-4">
+
+  <div class="max-w-md w-full bg-gray-800 p-8 rounded-xl shadow-lg space-y-6">
+    <h1 class="text-3xl font-bold text-center">Connexion Insecure 🔓</h1>
+
+    <form id="loginForm" class="space-y-4">
+      <div>
+        <label for="email" class="block text-sm font-medium">Email</label>
+        <input type="email" id="email" name="email" required class="mt-1 w-full p-2 bg-gray-700 rounded border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+      </div>
+      <div>
+        <label for="password" class="block text-sm font-medium">Mot de passe</label>
+        <input type="password" id="password" name="password" required class="mt-1 w-full p-2 bg-gray-700 rounded border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+      </div>
+      <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 p-2 rounded transition">Se connecter</button>
+    </form>
+
+    <div id="message" class="text-center text-sm text-green-400 hidden">Connexion réussie</div>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      const res = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }) // ⚠️ password en clair
+      });
+
+      if (res.ok) {
+        document.getElementById("message").classList.remove("hidden");
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 1000);
+      } else {
+        alert("Échec de la connexion");
+      }
+    });
+  </script>
+</body>
+</html>
